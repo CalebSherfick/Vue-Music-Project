@@ -1,14 +1,27 @@
 <template>
   <div class="details col-7 yellow">
-    <h1>{{movie.title}}</h1>
-    <img :src="'https://image.tmdb.org/t/p/w500/'+movie.poster_path" alt="">
+
+    <div v-for="song in songs">
+      <img class="song-img" :src="song.artworkUrl100"></img>
+      <h1>{{song.trackName}}</h1>
+      <h1>{{song.artistName}}</h1>
+      <ol>
+        <li v-for="song in collection">
+          {{song.trackName}}
+        </li>
+      </ol>
+      <audio controls :src="song.previewUrl"></audio>
+
+    </div>
+
+
   </div>
 </template>
 
 <script>
   export default {
     name: 'Details',
-    props: ['movie'],
+    props: ['songs'],
     data() {
       return {
       }

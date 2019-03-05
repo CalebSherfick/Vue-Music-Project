@@ -30,7 +30,7 @@
     },
     methods: {
       search() {
-        this.$store.dispatch('searchApi', this.query)
+        this.$store.dispatch('getMusicByArtist', this.query)
       }
     },
     components: {

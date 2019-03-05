@@ -2,12 +2,16 @@
   <div class="results row d-flex justify-content-around">
     <div class="col-4 yellow">
       <h1>Results</h1>
-      <ol>
-        <li v-for="movie in results" v-if="movie.vote_average" @click='setActiveMovie(movie)'>{{movie.title}} :
-          {{movie.vote_average}}</li>
-      </ol>
+      <div v-for="collection in results" @click='setActiveCollection(collection[0].collectionName)'>
+        <h3>{{collection[0].collectionName}}</h3>
+        <!-- <ol>
+          <li v-for="song in collection">
+            {{song.trackName}}
+          </li>
+        </ol> -->
+      </div>
     </div>
-    <details-view :movie='activeMovie' :someData="'here'"></details-view>
+    <details-view :songs='songs'></details-view>
   </div>
 </template>
 
@@ -17,21 +21,32 @@
     name: '',
     data() {
       return {
-        activeMovie: {}
+        activeCollection: {}
       }
     },
     computed: {
       results() {
-        let movies = this.$store.state.results
-        movies.sort((a, b) => {
-          return b.vote_average - a.vote_average
+        let dict = {}
+        let songs = this.$store.state.results
+        songs.sort((a, b) => {
+          return a.trackName - b.trackName
         })
-        return movies
+        for (let i = 0; i < songs.length; i++) {
+          let song = songs[i]
+          if (!dict[song.collectionName]) {
+            dict[song.collectionName] = []
+          }
+          dict[song.collectionName].push(song)
+        }
+        return dict
+      },
+      songs() {
+        return this.results[this.activeCollection] || []
       }
     },
     methods: {
-      setActiveMovie(movie) {
-        this.activeMovie = movie
+      setActiveCollection(collection) {
+        this.activeCollection = collection
       }
     },
     components: {
